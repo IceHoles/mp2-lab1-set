@@ -28,21 +28,17 @@ int TSet::GetMaxPower(void) const // получить макс. к-во эл-т�
 
 int TSet::IsMember(const int Elem) const // элемент множества?
 {
-    return BitField.test(Elem);
+    return BitField.GetBit(Elem);
 }
 
 void TSet::InsElem(const int Elem) // включение элемента множества
 {
-    if (Elem >= MaxPower)
-        throw out_of_range("Out of range");
-    BitField.set(Elem);
+    BitField.SetBit(Elem);
 }
 
 void TSet::DelElem(const int Elem) // исключение элемента множества
 {
-    if (Elem >= MaxPower)
-        throw out_of_range("Out of range");
-    BitField.reset(Elem);
+    BitField.ClrBit(Elem);
 }
 
 // теоретико-множественные операции
@@ -68,8 +64,6 @@ int TSet::operator!=(const TSet &s) const // сравнение
 
 TSet TSet::operator+(const TSet &s) // объединение
 {
-    if (MaxPower != s.MaxPower)
-        throw length_error("Length error");
     TSet temp(BitField | s.BitField);
     return temp;
 }
@@ -90,8 +84,6 @@ TSet TSet::operator-(const int Elem) // разность с элементом
 
 TSet TSet::operator*(const TSet &s) // пересечение
 {
-    if (MaxPower != s.MaxPower)
-        throw length_error("Length error");
     TSet temp(BitField & s.BitField);
     return temp;
 }

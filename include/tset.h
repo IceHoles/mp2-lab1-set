@@ -18,7 +18,7 @@ private:
 public:
     TSet(int mp) : MaxPower(mp), BitField(mp) {}
     TSet(const TSet &s);       // конструктор копирования
-    TSet(const TBitField& bf) : MaxPower(bf.size()), BitField(bf) {}// конструктор преобразования типа
+    TSet(const TBitField& bf) : MaxPower(bf.GetLength()), BitField(bf) {}// конструктор преобразования типа
   operator TBitField();      // преобразование типа к битовому полю
   // доступ к битам
   int GetMaxPower(void) const;     // максимальная мощность множества
