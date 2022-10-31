@@ -67,7 +67,7 @@ int TBitField::GetBit(const int n) const // получить значение б
     if (n < 0 || n > BitLen) {
         throw std::invalid_argument("Negative bit");
     }
-    return pMem[GetMemIndex(n)] & GetMemMask(n);;
+    return (pMem[GetMemIndex(n)] & GetMemMask(n)) >> (n % (sizeof(TELEM) * 8));;
 }
 
 // битовые операции
@@ -101,8 +101,7 @@ int TBitField::operator!=(const TBitField &bf) const // сравнение
 
 TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 {
-    int max = BitLen > bf.BitLen ? BitLen : bf.BitLen;
-    TBitField temp(max);
+    TBitField temp(BitLen > bf.BitLen ? BitLen : bf.BitLen);
     for (int i = 0; i < MemLen; i++) {
         temp.pMem[i] = pMem[i];
     }
@@ -114,13 +113,10 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 
 TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 {
-    int max = BitLen > bf.BitLen ? BitLen : bf.BitLen;
-    TBitField temp(max);
-    for (int i = 0; i < MemLen; i++) {
-        temp.pMem[i] = pMem[i];
-    }
-    for (int i = 0; i < bf.MemLen; i++) {
-        temp.pMem[i] &= bf.pMem[i];
+    TBitField temp(BitLen > bf.BitLen ? BitLen : bf.BitLen);
+    int min = MemLen < bf.MemLen ? MemLen : bf.MemLen;
+    for (int i = 0; i < min; i++) {
+        temp.pMem[i] = pMem[i] & bf.pMem[i];
     }
     return temp;
 }
